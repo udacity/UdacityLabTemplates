@@ -1,16 +1,19 @@
 #Script to deploy Azure AD users through Powershell in Azure's Cloudshell
 
-#Replace <ENTER-YOUR-AZURE-USERNAME> with your Azure username and run the whole script in Powershell in Azure's Cloudshell
+# TODO
+# Replace <ENTER-YOUR-AZURE-USERNAME> with your Azure username and run the whole script in Powershell in Azure's Cloudshell
 $AzureUserName = "<ENTER-YOUR-AZURE-USERNAME>"
 
-#Note1: Copy and paste the script in Powershell in Azure's Cloudshell. It will take 2-5 minutes to create the users.
-#Note 2: Monitor the progress. When you see the user with name "Micheal", go to Active Directory and verify if users are created, since this is the last user that was created.
+# Note 1: Copy and paste the script in Powershell in Azure's Cloudshell. It will take 2-5 minutes to create the users.
+# Note 2: Monitor the progress. When you see the user with name "Micheal", go to Active Directory and verify if users are created, since this is the last user that was created.
 
 Connect-AzureAD
 
-#creating azure ad users
+# TODO
+# The exact domain name can be found in your Azure AD → New user creation wizard in the portal. 
+$domainName = "<ENTER-YOUR-DOMAIN-NAME>"
 
-$domainName = $AzureUserName.Split("@")[1]
+# Creating azure ad users
 $tomusername = 'Tom@'+$domainName
 $andrew = 'Andrew@'+$domainName
 $srinadh = 'Srinadh@'+$domainName
