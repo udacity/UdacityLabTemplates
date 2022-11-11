@@ -205,56 +205,6 @@
       }
     },
     {
-      "name": "[variables('kalivmName')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-06-01",
-      "location": "[resourceGroup().location]",
-      "plan": {
-        "name": "kali",
-        "publisher":"kali-linux",
-        "product":"kali"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('kalinicName'))]"
-      ],
-
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('kalivmSize')]"
-        },
-
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('kalivmName'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 128
-          },
-          "imageReference": {
-            "publisher": "kali-linux",
-            "offer": "kali",
-            "sku": "kali",
-            "version": "2022.3.0"
-          }
-        },
-        "osProfile": {
-          "computerName": "Kali",
-          "adminUsername": "[parameters('kaliAdminUsername')]",
-          "adminPassword": "[parameters('kaliAdminPassword')]"
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('kalinicName'))]"
-            }
-          ]
-        }
-      }
-    },
-    {
       "apiVersion": "2017-04-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('debianx64DMZOnCloudNewpublicIPAddressName')]",
@@ -458,52 +408,7 @@
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('debianx64DMZOnCloudNewnetworkSecurityGroupName'))]"
         }
       }
-    },
-    {
-      "name": "[variables('debianx64DMZOnCloudNewvmName')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-06-01",
-      "location": "[resourceGroup().location]",
-
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('debianx64DMZOnCloudNewnicName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('debianx64DMZOnCloudNewvmSize')]"
-        },
-
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('debianx64DMZOnCloudNewvmName'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 128
-          },
-          "imageReference": {
-            "publisher": "Debian",
-            "offer": "debian-10",
-            "sku": "10",
-            "version": "latest"
-          }
-        },
-        "osProfile": {
-          "computerName": "Debian",
-          "adminUsername": "[parameters('rootUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('debianx64DMZOnCloudNewnicName'))]"
-            }
-          ]
-        }
-      }
-    },
+    },    
     {
       "apiVersion": "2017-04-01",
       "type": "Microsoft.Network/publicIPAddresses",
@@ -579,51 +484,6 @@
         ],
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('Debianx64DMZwebCMSCloudnetworkSecurityGroupName'))]"
-        }
-      }
-    },
-    {
-      "name": "[variables('Debianx64DMZwebCMSCloudvmName')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-06-01",
-      "location": "[resourceGroup().location]",
-
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('Debianx64DMZwebCMSCloudnicName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('Debianx64DMZwebCMSCloudvmSize')]"
-        },
-
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('Debianx64DMZwebCMSCloudvmName'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 128
-          },
-          "imageReference": {
-            "publisher": "Debian",
-            "offer": "debian-10",
-            "sku": "10",
-            "version": "latest"
-          }
-        },
-        "osProfile": {
-          "computerName": "Debian",
-          "adminUsername": "[parameters('rootUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('Debianx64DMZwebCMSCloudnicName'))]"
-            }
-          ]
         }
       }
     },
@@ -745,51 +605,6 @@
       }
     },
     {
-      "name": "[variables('DMZIServervmName')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-06-01",
-      "location": "[resourceGroup().location]",
-
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('DMZIServernicName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('DMZIServervmSize')]"
-        },
-
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('DMZIServervmName'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 30
-          },
-          "imageReference": {
-            "publisher": "Debian",
-            "offer": "debian-10",
-            "sku": "10",
-            "version": "latest"
-          }
-        },
-        "osProfile": {
-          "computerName": "Debian",
-          "adminUsername": "[parameters('rootUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('DMZIServernicName'))]"
-            }
-          ]
-        }
-      }
-    },
-    {
       "apiVersion": "2017-04-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('kaliinternalpublicIPAddressName')]",
@@ -905,57 +720,7 @@
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('kaliinternalnetworkSecurityGroupName'))]"
         }
       }
-    },
-    {
-      "name": "[variables('kaliinternalvmName')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-06-01",
-      "location": "[resourceGroup().location]",
-      "plan": {
-        "name": "kali",
-        "publisher":"kali-linux",
-        "product":"kali"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('kaliinternalnicName'))]"
-      ],
-
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('kaliinternalvmSize')]"
-        },
-
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('kaliinternalvmName'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 128
-          },
-          "imageReference": {
-            "publisher": "kali-linux",
-            "offer": "kali",
-            "sku": "kali",
-            "version": "2022.3.0"
-          }
-        },
-        "osProfile": {
-          "computerName": "Kali",
-          "adminUsername": "[parameters('kaliAdminUsername')]",
-          "adminPassword": "[parameters('kaliAdminPassword')]"
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('kaliinternalnicName'))]"
-            }
-          ]
-        }
-      }
-    },
+    },    
     {
       "apiVersion": "2017-04-01",
       "type": "Microsoft.Network/publicIPAddresses",
@@ -1022,53 +787,6 @@
       }
     },
     {
-      "name": "[variables('win10vmName')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-06-01",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('win10nicName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('win10vmSize')]"
-        },
-
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('win10vmName'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 127
-          },
-          "imageReference": {
-            "publisher": "MicrosoftWindowsDesktop",
-              "offer": "windows10preview",
-              "sku": "win10-22h2-pro",
-              "version": "19045.1826.220709"
-          }
-        },
-        "osProfile": {
-          "computerName": "myWindowsVM",
-          "adminUsername": "[parameters('rootUsername')]",
-          "adminPassword": "[parameters('adminPassword')]",
-          "windowsConfiguration": {
-            "provisionVmAgent": "true"
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('win10nicName'))]"
-            }
-          ]
-        }
-      }
-    },
-    {
       "apiVersion": "2017-04-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('DNSServerpublicIPAddressName')]",
@@ -1130,51 +848,6 @@
         ],
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('DNSServernetworkSecurityGroupName'))]"
-        }
-      }
-    },
-    {
-      "name": "[variables('DNSServervmName')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-06-01",
-      "location": "[resourceGroup().location]",
-
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('DNSServernicName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('DNSServervmSize')]"
-        },
-
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('DNSServervmName'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 127
-          },
-          "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2019-Datacenter",
-            "version": "latest"
-          }
-        },
-        "osProfile": {
-          "computerName": "Debian",
-          "adminUsername": "[parameters('rootUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('DNSServernicName'))]"
-            }
-          ]
         }
       }
     }

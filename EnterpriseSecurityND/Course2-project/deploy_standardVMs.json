@@ -224,8 +224,16 @@
             "diskSizeGB": 127
           },
           "imageReference": {
-            "id": "<PASTE-THE-jumpvm-IMAGE-ID-HERE>"
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2019-Datacenter",
+            "version": "latest"
           }
+        },
+        "osProfile": {
+          "computerName": "WindowsServer",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -364,7 +372,7 @@
         },
         "storageProfile": {
           "osDisk": {
-            "createOption": "fromImage",
+            "createOption": "FromImage",
             "managedDisk": {
               "storageAccountType": "[variables('osDiskType')]"
             },
@@ -373,8 +381,16 @@
           },
 
           "imageReference": {
-            "id": "<PASTE-THE-labvm-IMAGE-ID-HERE>"
+            "publisher": "MicrosoftWindowsDesktop",
+            "offer": "windows10preview",
+            "sku": "win10-22h2-pro",
+            "version": "19045.1826.220709"
           }
+        },
+        "osProfile": {
+          "computerName": "Windows10",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -489,8 +505,16 @@
             "diskSizeGB": 127
           },
           "imageReference": {
-            "id": "<PASTE-THE-ubuntu-IMAGE-ID-HERE>"
+            "publisher": "OpenLogic",
+            "offer": "CentOS-LVM",
+            "sku": "8-lvm-gen2",
+            "version": "8.2.2020062401"
           }
+        },
+        "osProfile": {
+          "computerName": "CentOS",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
         },
 
         "networkProfile": {
