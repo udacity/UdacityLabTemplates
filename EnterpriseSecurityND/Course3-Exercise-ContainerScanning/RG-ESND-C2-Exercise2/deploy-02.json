@@ -2,19 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-
-    "kaliadminUsername": {
-      "type": "string"
-
-    },
-    "kaliadminPassword": {
-      "type": "securestring"
-
-    },
-    "ubuntuadminUsername": {
+    "adminUsername": {
       "type": "string"
     },
-    "ubuntuadminPassword": {
+    "adminPassword": {
       "type": "securestring"
     },
     "UniqueID": {
@@ -171,6 +162,11 @@
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2018-10-01",
       "location": "[variables('location')]",
+      "plan": {
+        "name": "kali",
+        "publisher":"kali-linux",
+        "product":"kali"
+      },
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceNameLinux'))]"
       ],
@@ -189,10 +185,17 @@
             "diskSizeGB": 127
           },
           "imageReference": {
-            "id": "<PASTE-THE-kali-IMAGE-ID-HERE>"
+            "publisher": "kali-linux",
+            "offer": "kali",
+            "sku": "kali",
+            "version": "2022.3.0"
           }
         },
-
+        "osProfile": {
+          "computerName": "Kali",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -305,10 +308,18 @@
             "diskSizeGB": 512
           },
           "imageReference": {
-            "id": "<PASTE-THE-ubuntu-IMAGE-ID-HERE>"
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "18.04-LTS",
+            "version": "latest"
           }
         },
+        "osProfile": {
+          "computerName": "Ubuntu",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
 
+        },
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -325,11 +336,11 @@
 
     "kali username": {
       "type": "string",
-      "value": "[parameters('kaliadminUsername')]"
+      "value": "[parameters('adminUsername')]"
     },
     "kali password": {
       "type": "string",
-      "value": "[parameters('kaliadminPassword')]"
+      "value": "[parameters('adminPassword')]"
     },
     "Command to Connect to kali VM ": {
       "type": "string",
@@ -337,11 +348,11 @@
     },
     "ubuntu VM Username": {
       "type": "string",
-      "value": "[parameters('ubuntuadminUsername')]"
+      "value": "[parameters('adminUsername')]"
     },
     "ubuntu VM Password": {
       "type": "string",
-      "value": "[parameters('ubuntuadminPassword')]"
+      "value": "[parameters('adminPassword')]"
     },
     "Command to Connect to ubuntu VM ": {
       "type": "string",
