@@ -19,9 +19,9 @@ $UserSubscriptionId= "xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx"
 $labResourceGroupName = "nd0035-rg"
 
 # Arrays - Provided by Udacity - STATIC values
-$udacityImageDefinitionNameArray = @("Esnd-course3-Ms2-image", "Esnd-course3-turnkey-image")
-$vmNameArray = @("ms2-2022", "turnkey-2022")
-$nicNameArray = @("ms2-20221201", "turnkey-20221201")
+$udacityImageDefinitionNameArray = @("Esnd-course3-turnkey-image")
+$vmNameArray = @("turnkey-2022")
+$nicNameArray = @("turnkey-20221201")
 
 $SubscriptionId = Get-AzSubscription -SubscriptionId $UserSubscriptionId
 Set-AzContext -Subscription $SubscriptionId
