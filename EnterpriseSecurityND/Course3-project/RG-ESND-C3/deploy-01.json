@@ -8,26 +8,6 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "kaliadminUsername": {
-      "type": "string"
-
-    },
-    "kaliadminPassword": {
-      "type": "securestring"
-
-    },
-    "jumpvmadminUsername": {
-      "type": "string"
-    },
-    "jumpvmadminPassword": {
-      "type": "securestring"
-    },
-    "ubuntuadminUsername": {
-      "type": "string"
-    },
-    "ubuntuadminPassword": {
-      "type": "securestring"
-    },
     "UniqueID": {
         "type": "string",
         "metadata": {
@@ -118,9 +98,9 @@
     "subnetName": "default",
     "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', variables('linuxvirtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]",
-    "networkInterfaceNameLinux": "[concat('turnkey-', parameters('UniqueID'))]",
+    "networkInterfaceNameLinux": "turnkey-20221201",
     "networkInterfaceNamekali": "[concat('kali-', parameters('UniqueID'))]",
-    "networkInterfaceNamems2": "[concat('ms2-', parameters('UniqueID'))]",
+    "networkInterfaceNamems2": "ms2-20221201",
     "networkInterfaceNameubuntu": "[concat('ubuntu-', parameters('UniqueID'))]",
     "nsgIdLinux": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupNameLinux'))]",
     "nsgIdkali": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupNamekali'))]",
@@ -223,7 +203,7 @@
       "apiVersion": "2017-08-01",
       "location": "[resourceGroup().location]",
       "sku": {
-        "name": "Basic"
+        "name": "Standard"
       },
       "properties": {
         "publicIpAllocationMethod": "[variables('publicIpAddressTypeLinux')]",
@@ -262,43 +242,7 @@
         }
       }
     },
-    {
-      "name": "[variables('virtualMachineName')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-06-01",
-      "location": "[resourceGroup().location]",
 
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('jumpvmNetworkInterfaceName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('virtualMachineSize')]"
-        },
-
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('virtualMachineName'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 127
-          },
-          "imageReference": {
-            "id": "<PASTE-THE-jumpvm-IMAGE-ID-HERE>"
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('jumpvmNetworkInterfaceName'))]"
-            }
-          ]
-        }
-      }
-    },
 
     {
         "name": "[variables('networkSecurityGroupNamenessus')]",
@@ -321,7 +265,7 @@
           }
         },
         "sku": {
-          "name": "[variables('publicIpAddressSkuLinux')]"
+          "name": "Standard"
         }
       },
       {
@@ -377,7 +321,7 @@
               "publisher": "tenable",
               "offer": "tenablecorenessus",
               "sku": "tenablecorenessusbyol",
-              "version": "latest"
+              "version": "2022.11.22"
             }
           },
           "networkProfile": {
@@ -455,7 +399,7 @@
         }
       },
       "sku": {
-        "name": "[variables('publicIpAddressSkuLinux')]"
+        "name": "Standard"
       }
     },
     {
@@ -488,43 +432,7 @@
         }
       }
     },
-    {
-      "name": "[variables('virtualMachineNameLinux')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-10-01",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceNameLinux'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('virtualMachineSizeLinux')]"
-        },
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('virtualMachineNameLinux'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 127
-          },
-          "imageReference": {
-            "id": "<PASTE-THE-Turnkey-IMAGE-ID-HERE>"
-          }
-        },
 
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceNameLinux'))]"
-            }
-          ]
-        }
-
-      }
-    },
     {
       "name": "[variables('networkSecurityGroupNamekali')]",
       "type": "Microsoft.Network/networkSecurityGroups",
@@ -570,7 +478,7 @@
         }
       },
       "sku": {
-        "name": "[variables('publicIpAddressSkuLinux')]"
+        "name": "Standard"
       }
     },
     {
@@ -608,6 +516,11 @@
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2018-10-01",
       "location": "[variables('location')]",
+      "plan": {
+        "name": "kali",
+        "publisher":"kali-linux",
+        "product":"kali"
+      },
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceNamekali'))]"
       ],
@@ -626,10 +539,17 @@
             "diskSizeGB": 127
           },
           "imageReference": {
-            "id": "<PASTE-THE-Kali-IMAGE-ID-HERE>"
+            "publisher": "kali-linux",
+            "offer": "kali",
+            "sku": "kali",
+            "version": "2022.3.0"
           }
         },
-
+        "osProfile": {
+          "computerName": "Kali",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -685,7 +605,7 @@
         }
       },
       "sku": {
-        "name": "[variables('publicIpAddressSkuLinux')]"
+        "name": "Standard"
       }
     },
     {
@@ -718,43 +638,7 @@
         }
       }
     },
-    {
-      "name": "[variables('virtualMachineNamems2')]",
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-10-01",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceNamems2'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('virtualMachineSizeLinux')]"
-        },
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "name": "[concat(variables('virtualMachineNamems2'), '-osdisk')]",
-            "caching": "ReadWrite",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "diskSizeGB": 127
-          },
-          "imageReference": {
-            "id": "<PASTE-THE-ms2-IMAGE-ID-HERE>"
-          }
-        },
 
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceNamems2'))]"
-            }
-          ]
-        }
-
-      }
-    },
     {
       "name": "[variables('networkSecurityGroupNameubuntu')]",
       "type": "Microsoft.Network/networkSecurityGroups",
@@ -800,7 +684,7 @@
         }
       },
       "sku": {
-        "name": "[variables('publicIpAddressSkuLinux')]"
+        "name": "Standard"
       }
     },
     {
@@ -855,11 +739,19 @@
             },
             "diskSizeGB": 512
           },
-          "imageReference": {
-            "id": "<PASTE-THE-ubuntu-IMAGE-ID-HERE>"
+            "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "18.04-LTS",
+            "version": "latest"
           }
         },
+        "osProfile": {
+          "computerName": "Ubuntu",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
 
+        },
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -898,11 +790,11 @@
 
     "Kali VM Username": {
       "type": "string",
-      "value": "[parameters('kaliadminUsername')]"
+      "value": "[parameters('adminUsername')]"
     },
     "Kali VM Password": {
       "type": "string",
-      "value": "[parameters('kaliadminPassword')]"
+      "value": "[parameters('adminPassword')]"
     },
     "Command to Connect to Kali Linux VM ": {
       "type": "string",
@@ -946,19 +838,19 @@
     },
     "JumpVm AdminUsername": {
       "type": "string",
-      "value": "[parameters('jumpvmadminUsername')]"
+      "value": "[parameters('adminUsername')]"
     },
     "JumpVm AdminPassword": {
       "type": "string",
-      "value": "[parameters('jumpvmadminPassword')]"
+      "value": "[parameters('adminPassword')]"
     },
     "ubuntu VM Username": {
       "type": "string",
-      "value": "[parameters('ubuntuadminUsername')]"
+      "value": "[parameters('adminUsername')]"
     },
     "ubuntu VM Password": {
       "type": "string",
-      "value": "[parameters('ubuntuadminPassword')]"
+      "value": "[parameters('adminPassword')]"
     },
     "Command to Connect to ubuntu VM ": {
       "type": "string",
