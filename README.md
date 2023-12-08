@@ -1,2 +1,2 @@
 # Udacity
-Udacity Lab Materials
+Udacity Lab Materials for Nanodegrees using the Azure Cloud Lab. 
